@@ -1,0 +1,3 @@
+[submodule "myembedded.xyz/myblog/themes/hello-friend"]
+	path = myembedded.xyz/myblog/themes/hello-friend
+	url = https://github.com/panr/hugo-theme-hello-friend.git

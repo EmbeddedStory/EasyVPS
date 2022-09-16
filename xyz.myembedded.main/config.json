@@ -1,0 +1,39 @@
+{
+    "default": {
+        "nofollow": true,
+        "icon": "my-default-icon.png",
+        "newtab": false
+    },
+    "sites": [
+        {
+            "name": "Knowledge base",
+            "url" : "https://wiki.myembedded.xyz",
+            "nofollow": false
+        },
+        {
+            "name": "Bitwarden",
+            "url" : "https://bw.myembedded.xyz",
+            "nofollow": false
+        },
+        {
+            "name": "Knowledge base (old)",
+            "url" : "https://knw.myembedded.xyz",
+            "nofollow": false
+        },
+        {
+            "name": "Auth configuration",
+            "url" : "https://auth.myembedded.xyz",
+            "nofollow": false
+        },
+        {
+            "name": "Traefik info",
+            "url" : "http://95.217.5.46:8080/dashboard/",
+            "nofollow": false
+        },
+        {
+            "name": "CALDav",
+            "url" : "https://cal.myembedded.xyz",
+            "nofollow": false
+        }
+    ]
+}

@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  radicale:
+    image: tomsquest/docker-radicale
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.radicale.rule=Host(`cal.myembedded.xyz`)"
+      - "traefik.http.routers.radicale.entrypoints=websecure"
+      - "traefik.http.routers.radicale.tls.certresolver=letsencryptresolver"
+      - "traefik.http.routers.radicale.middlewares=authelia@docker"
+    container_name: radicale
+    read_only: true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETUID
+      - SETGID
+      - CHOWN
+      - KILL
+    healthcheck:
+      test: curl -f http://127.0.0.1:5232 || exit 1
+      interval: 30s
+      retries: 3
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+      - ./config:/config
+      - ./users:/etc/radicale
+    networks:
+      - reverse-proxy
+
+networks:
+  reverse-proxy:
+    external: true

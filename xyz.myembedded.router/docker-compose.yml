@@ -1,0 +1,80 @@
+# When deploying this for the first time, create a `secrets` folder in the same directory as the docker-compose.yml
+# file and create the files defineds in the following `secrets` section. After that make sure to change the permissions
+# to 0600.
+# Example:
+# $ ls secrets
+# -rw------- 1 diego diego  105 Sep 11 16:42 JWT_SECRET
+# -rw------- 1 diego diego  105 Sep 11 16:42 SESSION_SECRET
+# -rw------- 1 diego diego  105 Sep 11 16:28 STORAGE_ENCRYPTION_KEY
+
+# Regarding the 2FA, make sure that you setup backups automatically and that they are not lost, ever.
+version: '3.3'
+
+secrets:
+  JWT_SECRET:
+    file: ${PWD}/secrets/JWT_SECRET
+  SESSION_SECRET:
+    file: ${PWD}/secrets/SESSION_SECRET
+  STORAGE_ENCRYPTION_KEY:
+    file: ${PWD}/secrets/STORAGE_ENCRYPTION_KEY
+
+services:
+  reverse-proxy:
+    # The official v2 Traefik docker image
+    image: traefik:v2.8
+    container_name: traefik 
+    # Enables the web UI and tells Traefik to listen to docker
+    command: 
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      # Enable a http challenge named "myresolver"
+      - "--certificatesresolvers.letsencryptresolver.acme.httpchallenge=true"
+      # Tell it to use our predefined entrypoint named "web"
+      - "--certificatesresolvers.letsencryptresolver.acme.httpchallenge.entrypoint=web"
+      # The email to provide to let's encrypt
+      - "--certificatesresolvers.letsencryptresolver.acme.email=diego.lofer@gmail.com"
+      # Tell to store the certificate on a path under our volume
+      - "--certificatesresolvers.letsencryptresolver.acme.storage=/letsencrypt/acme.json"
+      - "--log.level=DEBUG"
+    ports:
+      # The HTTP port
+      - "80:80"
+      - "443:443"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+      - "./letsencrypt:/letsencrypt"
+    networks:
+      - reverse-proxy
+
+  authelia:
+    image: authelia/authelia:4
+    container_name: authelia
+    secrets: [JWT_SECRET, SESSION_SECRET, STORAGE_ENCRYPTION_KEY]
+    volumes:
+      - ./config:/config
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.authelia.rule=Host(`auth.myembedded.xyz`)
+      - traefik.http.routers.authelia.entrypoints=websecure
+      - traefik.http.routers.authelia.tls.certresolver=letsencryptresolver
+      - traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=https://auth.myembedded.xyz
+      - traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true
+      - traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email
+    restart: unless-stopped
+    environment:
+      - AUTHELIA_JWT_SECRET_FILE=/run/secrets/JWT_SECRET
+      - AUTHELIA_SESSION_SECRET_FILE=/run/secrets/SESSION_SECRET
+      - AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE=/run/secrets/STORAGE_ENCRYPTION_KEY
+      - TZ=America/Los_Angeles
+    networks:
+      - reverse-proxy
+
+networks:
+  reverse-proxy:
+    external: true

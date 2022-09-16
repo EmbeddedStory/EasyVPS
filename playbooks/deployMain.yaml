@@ -1,0 +1,33 @@
+---
+- name: Deploy Main 
+  hosts: myembedded
+  gather_facts: no
+  tasks:
+     - name: Make sure the folder exists 
+       shell:
+         cmd: |
+           mkdir -p /srv/www/xyz.myembedded.main
+
+     - name: Stop container 
+       shell:
+         cmd: |
+           docker-compose down || exit 0
+         chdir: /srv/www/xyz.myembedded.main
+
+     - name: Download latest repo
+       ansible.builtin.git:
+         repo: git@github.com:Dlozanof/web-services.git
+         dest: /tmp/latestrepo 
+         depth: 1
+         version: feature/ansible
+         force: yes
+
+     - name: Replace files of interest 
+       become: yes
+       shell:
+         cmd: |
+           rm -f /srv/www/xyz.myembedded.main/docker-compose.yml
+           mv /tmp/latestrepo/xyz.myembedded.main/docker-compose.yml /srv/www/xyz.myembedded.main/docker-compose.yml
+           sudo mv /tmp/latestrepo/xyz.myembedded.main/config.json /srv/www/xyz.myembedded.main/sites/sites.json
+           docker-compose up -d
+         chdir: /srv/www/xyz.myembedded.main

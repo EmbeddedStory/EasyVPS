@@ -1,0 +1,8 @@
+users:
+  diego:
+    displayname: "Diego"
+    password: "$argon2id$v=19$m=65536,t=3,p=4$U0RoUk5vM0JxQ2IvNWE3Mw$KNAoJW7BMcfFnmOOmvPJ3uZwRuCqPEqbkp7c+gRzTQE"
+    email: dlozanof@testing.com
+    groups:
+      - admins
+      - dev

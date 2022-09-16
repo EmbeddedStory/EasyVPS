@@ -1,0 +1,34 @@
+---
+- name: Deploy XBrowsersync 
+  hosts: myembedded
+  gather_facts: no
+  tasks:
+     - name: Make sure the folder exists 
+       shell:
+         cmd: |
+           mkdir -p /srv/www/xyz.myembedded.xbrowser
+
+     - name: Stop container 
+       shell:
+         cmd: |
+           docker-compose down || exit 0
+         chdir: /srv/www/xyz.myembedded.xbrowser
+
+     - name: Download latest repo
+       ansible.builtin.git:
+         repo: git@github.com:Dlozanof/web-services.git
+         dest: /tmp/latestrepo 
+         depth: 1
+         version: feature/ansible
+         force: yes
+
+     - name: Replace files of interest 
+       shell:
+         cmd: |
+           rm -f /srv/www/xyz.myembedded.xbrowser/docker-compose.yml
+           mv /tmp/latestrepo/xyz.myembedded.xbrowser/docker-compose.yml /srv/www/xyz.myembedded.xbrowser/docker-compose.yml
+           mv /tmp/latestrepo/xyz.myembedded.xbrowser/healthcheck.js /srv/www/xyz.myembedded.xbrowser/healthcheck.js
+           mv /tmp/latestrepo/xyz.myembedded.xbrowser/mongoconfig.js /srv/www/xyz.myembedded.xbrowser/mongoconfig.js
+           mv /tmp/latestrepo/xyz.myembedded.xbrowser/settings.json /srv/www/xyz.myembedded.xbrowser/settings.json
+           docker-compose up -d
+         chdir: /srv/www/xyz.myembedded.xbrowser

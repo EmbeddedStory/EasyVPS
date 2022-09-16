@@ -1,0 +1,4 @@
+cal.myembedded.xyz/*
+!cal.myembedded.xyz/docker-compose.yml
+knw.myembedded.xyz/data/
+myembedded.xyz/myblog/*

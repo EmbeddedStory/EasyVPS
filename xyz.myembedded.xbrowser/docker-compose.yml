@@ -1,0 +1,51 @@
+version: "3.3"
+
+services:
+  db:
+    container_name: "xbs-db"
+    environment:
+      - "MONGO_INITDB_DATABASE=$DB_NAME"
+      - "MONGO_INITDB_ROOT_PASSWORD=$DB_PASSWORD"
+      - "MONGO_INITDB_ROOT_USERNAME=$DB_USERNAME"
+      - "XBS_DB_NAME=$DB_NAME"
+      - "XBS_DB_PASSWORD=$DB_PASSWORD"
+      - "XBS_DB_USERNAME=$DB_USERNAME"
+    image: "mongo:4.4.4"
+    restart: "unless-stopped"
+    volumes:
+      - "xbs-db-data:/data/db"
+      - "xbs-db-backups:/data/backups"
+      - "./mongoconfig.js:/docker-entrypoint-initdb.d/mongoconfig.js"
+    networks:
+      - internal-network
+  api:
+    container_name: "xbs-api"
+    depends_on:
+      - "db"
+    expose:
+      - "8080"
+    environment:
+      - "XBROWSERSYNC_DB_PWD=$DB_PASSWORD"
+      - "XBROWSERSYNC_DB_USER=$DB_USERNAME"
+    image: "xbrowsersync/api:1.1.13"
+    restart: "unless-stopped"
+    volumes:
+      - "./settings.json:/usr/src/api/config/settings.json"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.xbrowser.rule=Host(`xbrowser.myembedded.xyz`)"
+      - "traefik.http.routers.xbrowser.entrypoints=websecure"
+      - "traefik.http.routers.xbrowser.tls.certresolver=letsencryptresolver"
+    networks:
+      - reverse-proxy
+      - internal-network
+
+volumes:
+  xbs-db-backups:
+  xbs-db-data:
+
+networks:
+  internal-network:
+    driver: bridge
+  reverse-proxy:
+    external: true

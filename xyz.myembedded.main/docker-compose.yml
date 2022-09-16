@@ -1,0 +1,29 @@
+version: '3'
+services:
+    web:
+      image: daledavies/jump
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.maindoor.rule=Host(`main.myembedded.xyz`)"
+        - "traefik.http.routers.maindoor.entrypoints=websecure"
+        - "traefik.http.routers.maindoor.tls.certresolver=letsencryptresolver"
+        - "traefik.http.routers.maindoor.middlewares=authelia@docker"
+      container_name: main
+      volumes:
+        - ./backgrounds:/backgrounds
+        - ./favicon:/favicon
+        - ./search:/search
+        - ./sites:/sites
+      environment:
+        SITENAME: 'Dashboard'
+        SHOWSEARCH : 'false'
+        NOINDEX: 'true'
+        CACHEBYPASS: 'true'
+        SHOWCLOCK: 'false'
+        BGBLUR: 1
+      networks:
+      - reverse-proxy
+
+networks:
+  reverse-proxy:
+    external: true
