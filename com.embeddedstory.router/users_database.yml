@@ -6,3 +6,17 @@ users:
     groups:
       - admins
       - dev
+  pablo:
+    displayname: "Pablo"
+    password: "$argon2id$v=19$m=65536,t=3,p=4$MVhzcFFrbWFucUd6ZE1BdA$ruEdwM+gMi1UFhnSM4m+olYEA0qhvNHWrqyaSYMDrfI"
+    email: dlozanof@testing.com
+    groups:
+      - admins
+      - dev
+  pedro:
+    displayname: "Pedro"
+    password: "$argon2id$v=19$m=65536,t=3,p=4$bDRkeGErMmt0b09namdobA$eE3cjFgaVtu8Kl+w1YPdzAdhYR3CmTshFLhoIXVP9yU"
+    email: dlozanof@testing.com
+    groups:
+      - admins
+      - dev
