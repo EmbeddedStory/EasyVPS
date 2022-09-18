@@ -6,29 +6,29 @@
      - name: Make sure the folder exists 
        shell:
          cmd: |
-           mkdir -p /srv/www/xyz.myembedded.xbrowser
+           mkdir -p /srv/www/com.embeddedstory.xbrowser
 
      - name: Stop container 
        shell:
          cmd: |
            docker-compose down || exit 0
-         chdir: /srv/www/xyz.myembedded.xbrowser
+         chdir: /srv/www/com.embeddedstory.xbrowser
 
      - name: Download latest repo
        ansible.builtin.git:
-         repo: git@github.com:Dlozanof/web-services.git
+         repo: git@github.com:EmbeddedStory/EasyVPS.git
          dest: /tmp/latestrepo 
          depth: 1
-         version: feature/ansible
+         version: myembedded
          force: yes
 
      - name: Replace files of interest 
        shell:
          cmd: |
-           rm -f /srv/www/xyz.myembedded.xbrowser/docker-compose.yml
-           mv /tmp/latestrepo/xyz.myembedded.xbrowser/docker-compose.yml /srv/www/xyz.myembedded.xbrowser/docker-compose.yml
-           mv /tmp/latestrepo/xyz.myembedded.xbrowser/healthcheck.js /srv/www/xyz.myembedded.xbrowser/healthcheck.js
-           mv /tmp/latestrepo/xyz.myembedded.xbrowser/mongoconfig.js /srv/www/xyz.myembedded.xbrowser/mongoconfig.js
-           mv /tmp/latestrepo/xyz.myembedded.xbrowser/settings.json /srv/www/xyz.myembedded.xbrowser/settings.json
+           rm -f /srv/www/com.embeddedstory.xbrowser/docker-compose.yml
+           mv /tmp/latestrepo/com.embeddedstory.xbrowser/docker-compose.yml /srv/www/com.embeddedstory.xbrowser/docker-compose.yml
+           mv /tmp/latestrepo/com.embeddedstory.xbrowser/healthcheck.js /srv/www/com.embeddedstory.xbrowser/healthcheck.js
+           mv /tmp/latestrepo/com.embeddedstory.xbrowser/mongoconfig.js /srv/www/com.embeddedstory.xbrowser/mongoconfig.js
+           mv /tmp/latestrepo/com.embeddedstory.xbrowser/settings.json /srv/www/com.embeddedstory.xbrowser/settings.json
            docker-compose up -d
-         chdir: /srv/www/xyz.myembedded.xbrowser
+         chdir: /srv/www/com.embeddedstory.xbrowser

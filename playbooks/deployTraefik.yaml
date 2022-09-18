@@ -6,30 +6,30 @@
      - name: Make sure the folder exists 
        shell:
          cmd: |
-           mkdir -p /srv/www/xyz.myembedded.router
-           mkdir -p /srv/www/xyz.myembedded.router/config
+           mkdir -p /srv/www/com.embeddedstory.router
+           mkdir -p /srv/www/com.embeddedstory.router/config
 
      - name: Stop container 
        shell:
          cmd: |
            docker-compose down || exit 0
-         chdir: /srv/www/xyz.myembedded.router
+         chdir: /srv/www/com.embeddedstory.router
 
      - name: Download latest repo
        ansible.builtin.git:
-         repo: git@github.com:Dlozanof/web-services.git
+         repo: git@github.com:EmbeddedStory/EasyVPS.git
          dest: /tmp/latestrepo 
          depth: 1
-         version: feature/ansible 
+         version: myembedded 
          force: yes
 
      - name: Replace files of interest 
        become: yes
        shell:
           cmd: |
-            mv /tmp/latestrepo/xyz.myembedded.router/docker-compose.yml docker-compose.yml
-            mv /tmp/latestrepo/xyz.myembedded.router/configuration.yml config/configuration.yml
-            mv /tmp/latestrepo/xyz.myembedded.router/users_database.yml config/users_database.yml
+            mv /tmp/latestrepo/com.embeddedstory.router/docker-compose.yml docker-compose.yml
+            mv /tmp/latestrepo/com.embeddedstory.router/configuration.yml config/configuration.yml
+            mv /tmp/latestrepo/com.embeddedstory.router/users_database.yml config/users_database.yml
             sudo chmod -R 0600 secrets
             docker-compose up -d
-          chdir: /srv/www/xyz.myembedded.router
+          chdir: /srv/www/com.embeddedstory.router

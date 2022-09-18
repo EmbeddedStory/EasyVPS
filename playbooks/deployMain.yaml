@@ -6,28 +6,28 @@
      - name: Make sure the folder exists 
        shell:
          cmd: |
-           mkdir -p /srv/www/xyz.myembedded.main
+           mkdir -p /srv/www/com.embeddedstory.main
 
      - name: Stop container 
        shell:
          cmd: |
            docker-compose down || exit 0
-         chdir: /srv/www/xyz.myembedded.main
+         chdir: /srv/www/com.embeddedstory.main
 
      - name: Download latest repo
        ansible.builtin.git:
-         repo: git@github.com:Dlozanof/web-services.git
+         repo: git@github.com:EmbeddedStory/EasyVPS.git
          dest: /tmp/latestrepo 
          depth: 1
-         version: feature/ansible
+         version: myembedded
          force: yes
 
      - name: Replace files of interest 
        become: yes
        shell:
          cmd: |
-           rm -f /srv/www/xyz.myembedded.main/docker-compose.yml
-           mv /tmp/latestrepo/xyz.myembedded.main/docker-compose.yml /srv/www/xyz.myembedded.main/docker-compose.yml
-           sudo mv /tmp/latestrepo/xyz.myembedded.main/config.json /srv/www/xyz.myembedded.main/sites/sites.json
+           rm -f /srv/www/com.embeddedstory.main/docker-compose.yml
+           mv /tmp/latestrepo/com.embeddedstory.main/docker-compose.yml /srv/www/com.embeddedstory.main/docker-compose.yml
+           sudo mv /tmp/latestrepo/com.embeddedstory.main/config.json /srv/www/com.embeddedstory.main/sites/sites.json
            docker-compose up -d
-         chdir: /srv/www/xyz.myembedded.main
+         chdir: /srv/www/com.embeddedstory.main

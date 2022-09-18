@@ -6,26 +6,26 @@
      - name: Make sure the folder exists 
        shell:
          cmd: |
-           mkdir -p /srv/www/xyz.myembedded.wiki
+           mkdir -p /srv/www/com.embeddedstory.wiki
 
      - name: Stop container 
        shell:
          cmd: |
            docker-compose down || exit 0
-         chdir: /srv/www/xyz.myembedded.wiki
+         chdir: /srv/www/com.embeddedstory.wiki
 
      - name: Download latest repo
        ansible.builtin.git:
-         repo: git@github.com:Dlozanof/web-services.git
+         repo: git@github.com:EmbeddedStory/EasyVPS.git
          dest: /tmp/latestrepo 
          depth: 1
-         version: feature/ansible
+         version: myembedded
          force: yes
 
      - name: Replace files of interest 
        shell:
          cmd: |
-           rm -f /srv/www/xyz.myembedded.wiki/docker-compose.yml
-           mv /tmp/latestrepo/xyz.myembedded.wiki/docker-compose.yml /srv/www/xyz.myembedded.wiki/docker-compose.yml
+           rm -f /srv/www/com.embeddedstory.wiki/docker-compose.yml
+           mv /tmp/latestrepo/com.embeddedstory.wiki/docker-compose.yml /srv/www/com.embeddedstory.wiki/docker-compose.yml
            docker-compose up -d
-         chdir: /srv/www/xyz.myembedded.wiki
+         chdir: /srv/www/com.embeddedstory.wiki
