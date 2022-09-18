@@ -1,6 +1,6 @@
 ---
 - name: Deploy XBrowsersync 
-  hosts: myembedded
+  hosts: embeddedstory
   gather_facts: no
   tasks:
      - name: Make sure the folder exists 
@@ -19,7 +19,7 @@
          repo: git@github.com:EmbeddedStory/EasyVPS.git
          dest: /tmp/latestrepo 
          depth: 1
-         version: myembedded
+         version: embeddedstory
          force: yes
 
      - name: Replace files of interest 

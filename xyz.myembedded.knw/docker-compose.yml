@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tiddlywiki.rule=Host(`knw.myembedded.xyz`)"
+      - "traefik.http.routers.tiddlywiki.rule=Host(`knw.embeddedstory.xyz`)"
       - "traefik.http.routers.tiddlywiki.entrypoints=websecure"
       - "traefik.http.routers.tiddlywiki.tls.certresolver=letsencryptresolver"
       - "traefik.http.routers.tiddlywiki.middlewares=authelia@docker"

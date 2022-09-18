@@ -33,7 +33,7 @@ services:
       - "./settings.json:/usr/src/api/config/settings.json"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.xbrowser.rule=Host(`xbrowser.myembedded.xyz`)"
+      - "traefik.http.routers.xbrowser.rule=Host(`xbrowser.embeddedstory.xyz`)"
       - "traefik.http.routers.xbrowser.entrypoints=websecure"
       - "traefik.http.routers.xbrowser.tls.certresolver=letsencryptresolver"
     networks:

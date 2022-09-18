@@ -5,7 +5,7 @@ server:
   port: 9091
 
 totp:
-  issuer: auth.myembedded.xyz
+  issuer: auth.embeddedstory.xyz
 
 authentication_backend:
   file:
@@ -15,24 +15,24 @@ access_control:
   default_policy: deny
   rules:
     # Allow API calls
-    - domain: cal.myembedded.xyz
+    - domain: cal.embeddedstory.xyz
       resources:
         - ".*/api.*"
       policy: bypass
-    - domain: cal.myembedded.xyz
+    - domain: cal.embeddedstory.xyz
       policy: two_factor
-    - domain: knw.myembedded.xyz
+    - domain: knw.embeddedstory.xyz
       policy: two_factor
-    - domain: wiki.myembedded.xyz
+    - domain: wiki.embeddedstory.xyz
       policy: two_factor
-    - domain: main.myembedded.xyz
+    - domain: main.embeddedstory.xyz
       policy: two_factor
 
 session:
   name: authelia_session
   expiration: 3600  # 1 hour
   inactivity: 3600  # 1 hour
-  domain: myembedded.xyz 
+  domain: embeddedstory.xyz 
 
 regulation:
   max_retries: 3
