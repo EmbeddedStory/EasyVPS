@@ -12,14 +12,14 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.bitwarden-ui.entrypoints=websecure
-      - traefik.http.routers.bitwarden-ui.rule=Host(`bw.embeddedstory.xyz`)
+      - traefik.http.routers.bitwarden-ui.rule=Host(`bw.embeddedstory.com`)
       - traefik.http.routers.bitwarden-ui.service=bitwarden-ui
       - traefik.http.routers.bitwarden-ui.tls.certresolver=letsencryptresolver
       - traefik.http.services.bitwarden-ui.loadbalancer.server.port=80
       - traefik.http.routers.bitwarden-websocket.entrypoints=websecure
       - traefik.http.routers.bitwarden-websocket.tls.certresolver=letsencryptresolver
       - traefik.http.routers.bitwarden-websocket.service=bitwarden-websocket
-      - traefik.http.routers.bitwarden-websocket.rule=Host(`bw.embeddedstory.xyz`) && Path(`/notifications/hub`)
+      - traefik.http.routers.bitwarden-websocket.rule=Host(`bw.embeddedstory.com`) && Path(`/notifications/hub`)
       - traefik.http.services.bitwarden-websocket.loadbalancer.server.port=3012
     networks:
       - reverse-proxy

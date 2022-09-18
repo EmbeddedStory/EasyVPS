@@ -4,7 +4,7 @@ services:
       image: daledavies/jump
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.maindoor.rule=Host(`main.embeddedstory.xyz`)"
+        - "traefik.http.routers.maindoor.rule=Host(`main.embeddedstory.com`)"
         - "traefik.http.routers.maindoor.entrypoints=websecure"
         - "traefik.http.routers.maindoor.tls.certresolver=letsencryptresolver"
         - "traefik.http.routers.maindoor.middlewares=authelia@docker"

@@ -60,10 +60,10 @@ services:
       - ./config:/config
     labels:
       - traefik.enable=true
-      - traefik.http.routers.authelia.rule=Host(`auth.embeddedstory.xyz`)
+      - traefik.http.routers.authelia.rule=Host(`auth.embeddedstory.com`)
       - traefik.http.routers.authelia.entrypoints=websecure
       - traefik.http.routers.authelia.tls.certresolver=letsencryptresolver
-      - traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=https://auth.embeddedstory.xyz
+      - traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=https://auth.embeddedstory.com
       - traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true
       - traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email
     restart: unless-stopped

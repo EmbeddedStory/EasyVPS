@@ -7,22 +7,22 @@
     "sites": [
         {
             "name": "Knowledge base",
-            "url" : "https://wiki.embeddedstory.xyz",
+            "url" : "https://wiki.embeddedstory.com",
             "nofollow": false
         },
         {
             "name": "Bitwarden",
-            "url" : "https://bw.embeddedstory.xyz",
+            "url" : "https://bw.embeddedstory.com",
             "nofollow": false
         },
         {
             "name": "Knowledge base (old)",
-            "url" : "https://knw.embeddedstory.xyz",
+            "url" : "https://knw.embeddedstory.com",
             "nofollow": false
         },
         {
             "name": "Auth configuration",
-            "url" : "https://auth.embeddedstory.xyz",
+            "url" : "https://auth.embeddedstory.com",
             "nofollow": false
         },
         {
@@ -32,7 +32,7 @@
         },
         {
             "name": "CALDav",
-            "url" : "https://cal.embeddedstory.xyz",
+            "url" : "https://cal.embeddedstory.com",
             "nofollow": false
         }
     ]
