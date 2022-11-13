@@ -1,0 +1,31 @@
+---
+- name: Deploy Concourse
+  hosts: embeddedstory
+  gather_facts: no
+  tasks:
+     - name: Make sure the folder exists 
+       shell:
+         cmd: |
+           mkdir -p /srv/www/com.embeddedstory.ci
+
+     - name: Stop container 
+       shell:
+         cmd: |
+           docker-compose down || exit 0
+         chdir: /srv/www/com.embeddedstory.ci
+
+     - name: Download latest repo
+       ansible.builtin.git:
+         repo: git@github.com:EmbeddedStory/EasyVPS.git
+         dest: /tmp/latestrepo 
+         depth: 1
+         version: embeddedstory
+         force: yes
+
+     - name: Replace files of interest 
+       shell:
+         cmd: |
+           rm -f /srv/www/com.embeddedstory.ci/docker-compose.yml
+           mv /tmp/latestrepo/com.embeddedstory.ci/docker-compose.yml /srv/www/com.embeddedstory.ci/docker-compose.yml
+           docker-compose up -d
+         chdir: /srv/www/com.embeddedstory.ci

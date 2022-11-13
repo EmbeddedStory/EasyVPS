@@ -27,7 +27,8 @@ access_control:
       policy: two_factor
     - domain: main.embeddedstory.com
       policy: two_factor
-
+    - domain: ci.embeddedstory.com
+      policy: two_factor
 session:
   name: authelia_session
   expiration: 3600  # 1 hour
