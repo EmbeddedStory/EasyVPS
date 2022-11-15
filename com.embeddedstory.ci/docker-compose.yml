@@ -16,7 +16,7 @@ services:
   concourse:
     image: concourse/concourse
     container_name: concourse
-    command:  web
+    command:  web --encryption-key 63FAF00A63FAF00A63FAF00A63FAF00A
     ports: ["8090:8080"]
     networks:
       - concourse-network
@@ -26,36 +26,20 @@ services:
       - CONCOURSE_POSTGRES_DATABASE=bitnami_concourse
       - CONCOURSE_POSTGRES_USER=bn_concourse
       - CONCOURSE_POSTGRES_PASSWORD=bitnami1
-      - CONCOURSE_EXTERNAL_URL=https://ci.embeddedstory.com
+      - CONCOURSE_EXTERNAL_URL=http://embeddedstory.com:8090/
       - CONCOURSE_ADD_LOCAL_USER=diego:123
       - CONCOURSE_MAIN_TEAM_LOCAL_USER=diego
       - CONCOURSE_SESSION_SIGNING_KEY=/keys/session_signing_key
       - CONCOURSE_TSA_HOST_KEY=/keys/tsa_host_key
       - CONCOURSE_TSA_AUTHORIZED_KEYS=/keys/authorized_worker_keys
       - CONCOURSE_CLUSTER_NAME=EmbeddedStory
-      # CONCOURSE_ADD_LOCAL_USER=user:bitnami,guest:guest
-      # CONCOURSE_MAIN_TEAM_LOCAL_USER=user
-      # CONCOURSE_ENABLE_PIPELINE_INSTANCES=true
-      # CONCOURSE_ENABLE_ACROSS_STEP=true
-      # CONCOURSE_ENABLE_CACHE_STREAMED_VOLUMES=true
-      # CONCOURSE_WORKER_TSA_WORKER_PRIVATE_KEY=a
-    labels:
-      - "traefik.enable=true"
-      # Create router taht points to service 'ciconcourse'
-      - "traefik.http.routers.ciconcourse.rule=Host(`ci.embeddedstory.com`)"
-      - "traefik.http.routers.ciconcourse.entrypoints=websecure"
-      - "traefik.http.routers.ciconcourse.service=ciconcourse"
-      # Create service 'ciconcourse'
-      - "traefik.http.services.ciconcourse.loadbalancer.server.port=8080"
-      - "traefik.http.routers.ciconcourse.tls.certresolver=letsencryptresolver"
-      #- "traefik.http.routers.ciconcourse.middlewares=authelia@docker"
     volumes:
       - 'concourse_web_data:/bitnami/concourse'
       - './:/keys'
 
   concourse_worker:
     image: concourse/concourse
-    command:  worker
+    command:  worker --runtime containerd
     privileged: true
     networks:
       - concourse-network      
@@ -66,7 +50,7 @@ services:
       # CONCOURSE_BIND_IP=0.0.0.0
       # CONCOURSE_BAGGAGECLAIM_BIND_IP=0.0.0.0
       # CONCOURSE_BAGGAGECLAIM_DRIVER=overlay
-      # CONCOURSE_CONTAINERD_DNS_PROXY_ENABLE=true
+      - CONCOURSE_CONTAINERD_DNS_PROXY_ENABLE=true
       # CONCOURSE_WEB_PUBLIC_DIR=/opt/bitnami/concourse/web/public
       # CONCOURSE_WORK_DIR=/opt/bitnami/concourse
       # CONCOURSE_WORKER_TSA_WORKER_PRIVATE_KEY=a
